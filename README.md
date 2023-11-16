@@ -18,7 +18,7 @@ BudgetApp is a simple yet powerful personal budget management tool with a GUI, d
 - tkinter
 - sqlite3
 - matplotlib
-- pandas (or openpyxl for spreadsheet handling)
+- pandas
 
 
 ## Contributing
