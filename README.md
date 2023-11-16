@@ -9,7 +9,7 @@ BudgetApp is a simple yet powerful personal budget management tool with a GUI, d
 - Data storage in a SQLite database.
 - Export functionality to spreadsheet files.
 - Data visualization with pie charts and graphs.
-- Monthly tracking of spending and savings growth.
+- Tracked spending and savings growth.
 
 
 ## Dependencies
