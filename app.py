@@ -48,18 +48,33 @@ class BudgetApp:
         tab_name = self.notebook.tab(self.notebook.select(), "text")
         field_list, frame = self.tabs[tab_name]
 
+        field_vars = {}
+
         new_field = tk.Frame(frame)
+        
+        name_var = tk.StringVar()
         tk.Label(new_field, text=f'Name:').pack(side=tk.LEFT)
-        tk.Entry(new_field).pack(side=tk.LEFT)
+        tk.Entry(new_field, textvariable=name_var).pack(side=tk.LEFT)
+        field_vars['name'] = name_var  # Save the StringVar
+        
+        amount_var = tk.StringVar()
         tk.Label(new_field, text='Amount:').pack(side=tk.LEFT)
-        tk.Entry(new_field).pack(side=tk.LEFT)
+        amount_entry = tk.Entry(new_field, textvariable=amount_var)
+        amount_entry.pack(side=tk.LEFT)
+        field_vars['amount'] = amount_var  # Save the StringVar
+        # Allow only numeric input for amount
+        self.validate_numeric_entry(amount_entry)
         
         # Add interest rate field for Bills and Savings tabs
         if tab_name in ['Bills', 'Savings']:
+            interest_var = tk.StringVar()
             tk.Label(new_field, text='Interest Rate (%):').pack(side=tk.LEFT)
-            interest_rate = tk.Entry(new_field)
+            interest_rate = tk.Entry(new_field, textvariable=interest_var)
             interest_rate.insert(0, "0")  # Default value
             interest_rate.pack(side=tk.LEFT)
+            field_vars['interest'] = interest_var  # Save the StringVar
+            # Allow only numeric input for interest
+            self.validate_numeric_entry(interest_rate)
         
         new_field.pack()
 
@@ -97,6 +112,18 @@ class BudgetApp:
     def export_data_to_spreadsheet(self):
         # Logic to export data to a spreadsheet
         pass
+    
+    def validate_numeric_entry(self, entry):
+        # Allow only digits and a single dot in the entry field
+        def validate(char, entry_value):
+            if char in '0123456789.':
+                if char == '.' and '.' in entry_value:
+                    return False
+                return True
+            return False
+
+        validate_command = (self.root.register(validate), '%S', '%P')
+        entry.configure(validate='key', validatecommand=validate_command)
     
     
 if __name__ == "__main__":
