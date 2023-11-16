@@ -114,17 +114,22 @@ class BudgetApp:
         pass
     
     def validate_numeric_entry(self, entry):
-        # Allow only digits and a single dot in the entry field
-        def validate(char, entry_value):
-            if char in '0123456789.':
-                if char == '.' and '.' in entry_value:
-                    return False
-                return True
-            return False
+    # Allow only digits and a single dot in the entry field
+        def validate(action, index, value_if_allowed, prior_value, text, validation_type, trigger_type, widget_name):
+            # if the action is an insertion
+            if action == '1':
+                if text in '0123456789.':
+                    try:
+                        float(value_if_allowed)
+                        return True
+                    except ValueError:
+                        return False
+                return False
+            return True
 
-        validate_command = (self.root.register(validate), '%S', '%P')
-        entry.configure(validate='key', validatecommand=validate_command)
-    
+        vcmd = (self.root.register(validate), '%d', '%i', '%P', '%s', '%S', '%v', '%V', '%W')
+        entry.configure(validate='key', validatecommand=vcmd)
+
     
 if __name__ == "__main__":
     root = tk.Tk()
